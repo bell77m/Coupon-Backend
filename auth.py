@@ -1,17 +1,28 @@
+# auth.py
+from jose import JWTError, jwt
 from fastapi import Depends, HTTPException, status
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
-import secrets
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from datetime import datetime, timedelta
 
-security = HTTPBasic()
+SECRET_KEY = "cybergeek2025"  # Replace with env var in prod
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
-def verify_basic_auth(credentials: HTTPBasicCredentials = Depends(security)):
-    correct_username = secrets.compare_digest(credentials.username, "admin")
-    correct_password = secrets.compare_digest(credentials.password, "1234")
+security = HTTPBearer()
 
-    if not (correct_username and correct_password):
+def create_access_token(data: dict, expires_delta: timedelta = None):
+    to_encode = data.copy()
+    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
+    to_encode.update({"exp": expire})
+    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
+def verify_jwt(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    token = credentials.credentials
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return payload
+    except JWTError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid Basic Auth credentials",
-            headers={"WWW-Authenticate": "Basic"},
+            detail="Invalid or expired token",
         )
-    return credentials.username
