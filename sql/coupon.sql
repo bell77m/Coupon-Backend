@@ -1,5 +1,5 @@
 CREATE TABLE `users` (
-  `id` integer PRIMARY KEY,
+  `id` integer PRIMARY KEY AUTO_INCREMENT,
   `user_nisit` varchar(255),
   `password` varchar(255),
   `coupon_meal_used` integer,
@@ -8,7 +8,7 @@ CREATE TABLE `users` (
 );
 
 CREATE TABLE `stores` (
-  `id` integer PRIMARY KEY,
+  `id` integer PRIMARY KEY AUTO_INCREMENT,
   `store_type` varchar(255),
   `user_store` varchar(255),
   `password` varchar(255),
@@ -16,7 +16,7 @@ CREATE TABLE `stores` (
 );
 
 CREATE TABLE `orders` (
-  `id` integer PRIMARY KEY,
+  `id` integer PRIMARY KEY AUTO_INCREMENT,
   `user_id` integer NOT NULL,
   `store_id` integer NOT NULL,
   `created_at` timestamp

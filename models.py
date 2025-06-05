@@ -7,7 +7,7 @@ Base = declarative_base()
 
 class User(Base):
     __tablename__ = "users"
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     user_nisit = Column(String(255))
     password = Column(String(255))
     coupon_meal_used = Column(Integer, default=0)
@@ -18,7 +18,7 @@ class User(Base):
 
 class Store(Base):
     __tablename__ = "stores"
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     store_type = Column(String(255))
     user_store = Column(String(255))
     password = Column(String(255))
@@ -28,7 +28,7 @@ class Store(Base):
 
 class Order(Base):
     __tablename__ = "orders"
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey("users.id"))
     store_id = Column(Integer, ForeignKey("stores.id"))
     created_at = Column(TIMESTAMP, default=datetime.datetime.utcnow)
