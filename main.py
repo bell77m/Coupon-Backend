@@ -34,4 +34,4 @@ def login(data: LoginRequest):
     raise HTTPException(status_code=401, detail="Invalid credentials")
 
 
-app.include_router(graphql_app, prefix="/graphql", dependencies=[Depends(verify_jwt)])
+app.include_router(graphql_app, prefix="/graphql")

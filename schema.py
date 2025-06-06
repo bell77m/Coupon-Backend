@@ -44,10 +44,12 @@ class Query:
     def orders(self, info) -> List[OrderType]:
         db: Session = get_db()
         return db.query(Order).all()
-
+    @strawberry.field
+    def user(self, info, user_nisit: str) -> Optional[UserType]:
+        db: Session = get_db()
+        return db.query(User).filter(User.user_nisit == user_nisit).first()
 #Mutations
 
-@strawberry.input
 @strawberry.input
 class UserInput:
     user_nisit: str
