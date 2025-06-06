@@ -3,7 +3,7 @@ from typing import List, Optional
 from sqlalchemy.orm import Session
 from models import User, Store, Order
 from db import get_db
-
+from auth import get_current_user
 #Query
 @strawberry.type
 class UserType:
@@ -44,10 +44,12 @@ class Query:
     def orders(self, info) -> List[OrderType]:
         db: Session = get_db()
         return db.query(Order).all()
+
     @strawberry.field
     def user(self, info, user_nisit: str) -> Optional[UserType]:
         db: Session = get_db()
         return db.query(User).filter(User.user_nisit == user_nisit).first()
+
 #Mutations
 
 @strawberry.input
